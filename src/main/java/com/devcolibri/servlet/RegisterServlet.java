@@ -1,6 +1,7 @@
 package com.devcolibri.servlet;
 
 import Materials.UserInfo;
+import org.example.SQLConnection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,9 +31,16 @@ public class RegisterServlet extends HttpServlet {
             if (!theDir.exists()){
                 theDir.mkdirs();
             }
+            try {
+                SQLConnection.setUser(new UserInfo(username, password, address));
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             UserInfo.usersData.put(username, new UserInfo(username, password, address));
             String path = req.getContextPath() + "/login";
             resp.sendRedirect(path);
         }
     }
+
+
 }
